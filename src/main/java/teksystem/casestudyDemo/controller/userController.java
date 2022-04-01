@@ -32,6 +32,12 @@ public class userController {
         response.setViewName("user/register");
         log.info(bean.toString());
 
+        
+        kjdnfkjewbfkjwe;
+        for (:
+             ) {
+            
+        }
         User user = new User();
         user.setEmail(bean.getEmail());
         user.setFirstName(bean.getFirstName());
