@@ -21,4 +21,18 @@ we are saying the user needs to grab the email for each element in the list that
 </c:forEach>
 </table>
 
+<table>
+    <tr>
+        <th>Error Key</th>
+        <th>Error Value</th>
+    </tr>
+    <c:forEach items="${errors}" var="error">
+        <tr>
+            <td>${error.key}</td>
+            <td>${error.value}</td>
+        </tr>
+    </c:forEach>
+</table>
+
+
 <jsp:include page="../includes/footer.jsp"/>
