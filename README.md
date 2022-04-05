@@ -1,7 +1,7 @@
 # **Casestudy Demo - Educational Use**
 
 
-##Project Details: **MVC - Springboot - Java** 
+## Project Details: **MVC - Springboot - Java** 
 
 This will be updated throughout time to reflect what I am learning and trying new things and concepts
 
