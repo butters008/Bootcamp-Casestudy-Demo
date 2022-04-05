@@ -1,4 +1,4 @@
-Casestudy Demo - Educational Use
+**Casestudy Demo - Educational Use**
 
 
 This is a project using Springboot while using the MVC (Model View Controller) structure.
