@@ -1,7 +1,7 @@
 # **Casestudy Demo - Educational Use**
 
 
-This is a project using Springboot while using the MVC (Model View Controller) structure.
+##Project Details: **MVC - Springboot - Java** 
 
 This will be updated throughout time to reflect what I am learning and trying new things and concepts
 
