@@ -26,4 +26,17 @@
     <br><br>
     <button type="submit">Submit</button>
 </form>
+
+<table>
+    <tr>
+        <th>Error Key</th>
+        <th>Error Value</th>
+    </tr>
+    <c:forEach items="${errors}" var="error">
+        <tr>
+            <td>${error.key}</td>
+            <td>${error.value}</td>
+        </tr>
+    </c:forEach>
+</table>
 <jsp:include page="../includes/footer.jsp"/>

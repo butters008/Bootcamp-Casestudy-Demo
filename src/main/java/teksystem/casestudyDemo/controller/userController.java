@@ -3,6 +3,9 @@ package teksystem.casestudyDemo.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +15,8 @@ import teksystem.casestudyDemo.database.DAO.UserDAO;
 import teksystem.casestudyDemo.database.entity.User;
 import teksystem.casestudyDemo.formbean.RegisterFormBean;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -27,7 +32,7 @@ public class userController {
         ModelAndView response = new ModelAndView();
         response.setViewName("user/register");
 
-        //seeding the model fo it wont be empty
+        //seeding the model so it won't be empty
         RegisterFormBean form = new RegisterFormBean();
         response.addObject("form", form);
 
@@ -37,13 +42,60 @@ public class userController {
 
     //This method becomes a create and edit method
     @RequestMapping(value = "/user/registerSubmit", method = RequestMethod.POST)
-    public ModelAndView registerSubmit(RegisterFormBean bean) throws Exception {
+    public ModelAndView registerSubmit(@Valid RegisterFormBean bean, BindingResult bindingResult) throws Exception {
+        /*
+        * An understanding of what is going on and how this is using the MVC
+        * The class -> ModelAndView (w/ ref name of: ) response <- is what we are using to connect the
+        * model and the view to this controller.  We are saying "With this MODEL and this VIEW", connect
+        * with the response.
+        *
+        * So, we query with the entity DAO (our example userDAO) and we take the query and put it in our model
+        * which is the RegisterFormBean (which is a POJO, atm).  Once we put it in the model, Spring will than
+        * say it needs to go to a view, and we use a few different methods to associate the model to the view
+        * through the controller.
+        *
+        * Here are the methods we are using to connect the controller and model to the view
+        * (1) - @RequestMapping(value = "/user/registerSubmit", method = RequestMethod.POST)
+        *  |-> This goes on top of method and tells the controller to execute statement at this URL
+        *      We can execute on a different URL while being on a different URL EX: register.jsp(view) and execution on /user/edit/{userId}
+        * (2) - response.setViewName("user/register");
+        *  |-> This tells the controller that this statement is associated to this view
+        *      We can have multiple executions on the same view
+        * (3) - response.addObject("users", users);
+        *  |-> Adding objects to the view. This is how we add/show the model/info on the view.
+        * */
         ModelAndView response = new ModelAndView();
+
+        if(bindingResult.hasErrors()){
+            //Creating a new map for the errors
+            HashMap errors = new HashMap();
+
+            for(ObjectError error : bindingResult.getAllErrors()){
+                /*
+                * The first Param -> ((FieldError) error).getField() <- is the key
+                * while the second param -> error.getDefaultMessage() <- is the value
+                * */
+                errors.put(((FieldError) error).getField(), error.getDefaultMessage());
+                //Logging out to the console
+                log.info(((FieldError) error).getField() + " " + error.getDefaultMessage());
+            }
+
+            //Adding the list of errors to the model
+            response.addObject("formErrors", errors);
+
+            /*
+            * Because this is an error, we do not want to process the logic below that will creat a new user
+            * We want to show register.jsp
+            * */
+            response.setViewName("user/register");
+            return response;
+        }
+
         response.setViewName("user/register");
         log.info(bean.toString());
 
         /*
-        * The firs thing we will try and do is see if there is a user already in the DB
+        * The first thing we will try and do is see if there is a user already in the DB
         * If there is, than it will skip the if statement
         * */
         User user = userDAO.findById(bean.getId());
@@ -60,14 +112,17 @@ public class userController {
 
         userDAO.save(user);
 
-        //Redirecting the user to the edit page
+        /*
+        * Now we are redirecting the user to the edit page, and this is where the UPDATE
+        * portion of CRUD will tae place. Since we have to redirect the user to the edit view
+        * which is still in the register.jsp page (explanation -> look at editUser method <-)
+        * */
+        //
         //The edit page will be responsable for loading the user from the DB
         //Edit page will take care of RU of CRUD
         //When you use redirect: as part of the view name, it triggers spring to tell the
         //browser to o a redirect the url after the :
         response.setViewName("redirect:/user/edit/" + user.getId());
-
-
         return response;
     }
 
@@ -96,8 +151,6 @@ public class userController {
 
     @GetMapping(value = "/user/search")
     public ModelAndView searchUser() throws Exception {
-        //The ModelAndView is the class that says hey, we need to get the model
-        //which the model send this to the view.
         ModelAndView response = new ModelAndView();
         response.setViewName("user/search");
 
