@@ -3,7 +3,9 @@
 
 Project Details: **MVC - Springboot - Java** 
 
-This will be updated throughout time to reflect what I am learning and trying new things and concepts
+
+Summary/timeline of learning:
+-------------------------------------------------------------------------------------------------------------------
 
 (4/5/21)
 This project is meant to be practice for concepts and knowledge of Springboot.  This repo was started a few days after the creation of the project
