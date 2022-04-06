@@ -3,13 +3,8 @@ package teksystem.casestudyDemo.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import teksystem.casestudyDemo.database.DAO.UserDAO;
 import teksystem.casestudyDemo.database.entity.User;
@@ -26,7 +21,7 @@ public class userController {
     @Autowired
     private UserDAO userDAO;
 
-
+    //Need to have a simple get for the page to load
     @RequestMapping(value = "/user/register", method = RequestMethod.GET)
     public ModelAndView register() throws Exception {
         ModelAndView response = new ModelAndView();
@@ -149,6 +144,7 @@ public class userController {
         return response;
     }
 
+    //Need to have a simple get for the page to load
     @GetMapping(value = "/user/search")
     public ModelAndView searchUser() throws Exception {
         ModelAndView response = new ModelAndView();
@@ -156,8 +152,42 @@ public class userController {
 
         //This is just getting a list of users with the first name of Keith
         //We need to do it dynamically, but this way works for example -- just hard code it
-        List<User> users = userDAO.findByFirstName("Keith");
+        List<User> users = userDAO.findByFirstName("BOB");
         response.addObject("users", users);
+
+        return response;
+    }
+
+    /*
+    * create a form on the user search page that submits to this route using a get method
+    * make an input box for the user to enter a search term for first name
+    * add a @RequestParam to take in a search value from the input box - use required = false in the annotation
+    * use the search value in the query
+    * add the search value to the model and make it display in the input box when the page reloads
+    * add error checking to make sure that the incoming search value is not null and is not empty.
+    * find apache string utils on maven central and add it to your pom file - very high recommendation
+    * research the StringUtils.isEmpty function and use for error checking
+    * */
+    @GetMapping(value = "/user/searchUserName")
+    public ModelAndView searchUserName(@RequestParam(value = "searchName", required = false) String name) throws Exception {
+        ModelAndView response = new ModelAndView();
+
+
+//        Errors errors = new BeanPropertyBindingResult(users, "users");
+//        log.info(errors.toString());
+
+        log.info(name);
+
+        if(name != null || !name.equals("")){
+            //rings true and errors
+            List<User> users = userDAO.findByFirstName(name);
+            response.addObject("users", users);
+            response.setViewName("user/search");
+
+        }
+        else{
+            response.setViewName("redirect:/user/search");
+        }
 
         return response;
     }
