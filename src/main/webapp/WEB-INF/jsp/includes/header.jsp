@@ -15,7 +15,7 @@
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
-    <div class="container-fluid">
+    <div class="container">
         <a class="navbar-brand" href="/index">Index</a> |
         <a class="navbar-brand" href="/ajax">Ajax</a> |
         <a class="navbar-brand" href="/user/register">Register</a> |
