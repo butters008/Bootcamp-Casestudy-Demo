@@ -29,9 +29,6 @@ public class userController {
         ModelAndView response = new ModelAndView();
         response.setViewName("user/register");
 
-        //seeding the model so it won't be empty
-        RegisterFormBean form = new RegisterFormBean();
-        response.addObject("form", form);
 
         return response;
     }

@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="includes/header.jsp"/>
-<h1>Hello</h1>
+<h1>This is the index page</h1>
 ${userList}
 <ul>
     <:forEach var="obj" items="${userList}">
