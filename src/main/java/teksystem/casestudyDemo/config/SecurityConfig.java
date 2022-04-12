@@ -25,6 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /*
      * The indentations are not needed, however, coming back to this without indentations
      * would make know and following along a lot more difficult
+     *
+     * This is boiler page code
      * */
     // @formatter:off
     @Override
@@ -43,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login/login")
                 //This is the link that is used in the forms
                 .loginProcessingUrl("/login/loginSubmit")
+                .defaultSuccessUrl("/index")
                 .and()
             .logout()
                 .invalidateHttpSession(true)

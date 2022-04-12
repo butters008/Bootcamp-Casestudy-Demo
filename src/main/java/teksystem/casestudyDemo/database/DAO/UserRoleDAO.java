@@ -7,6 +7,9 @@ import teksystem.casestudyDemo.database.entity.UserRole;
 
 import java.util.List;
 
+/*
+ * Boilerplate code
+ * */
 @Repository
 public interface UserRoleDAO extends JpaRepository<UserRole, Long> {
     List<UserRole> findByUserId(@Param("user_id") Integer userId);

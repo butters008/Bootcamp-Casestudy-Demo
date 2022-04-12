@@ -2,6 +2,8 @@ package teksystem.casestudyDemo.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import teksystem.casestudyDemo.database.DAO.UserDAO;
 import teksystem.casestudyDemo.database.entity.User;
+import teksystem.casestudyDemo.database.entity.UserRole;
 import teksystem.casestudyDemo.formbean.RegisterFormBean;
 
 import javax.validation.Valid;
@@ -18,10 +21,14 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 public class userController {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Need to have a simple get for the page to load
     @RequestMapping(value = "/user/register", method = RequestMethod.GET)
@@ -121,9 +128,15 @@ public class userController {
         user.setEmail(bean.getEmail());
         user.setFirstName(bean.getFirstName());
         user.setLastName(bean.getLastName());
-        user.setPassword(bean.getPassword());
+        String password = passwordEncoder.encode(bean.getPassword());
+        user.setPassword(password);
 
         userDAO.save(user);
+
+        UserRole userRole = new UserRole();
+        userRole.setUserId(user.getId());
+        userRole.setUserRole("USER");
+        //manually do admin roles
 
         /*
          * Now we are redirecting the user to the edit page, and this is where the UPDATE
@@ -149,6 +162,7 @@ public class userController {
         form.setEmail(user.getEmail());
         form.setFirstName(user.getFirstName());
         form.setLastName(user.getLastName());
+
         form.setPassword(user.getPassword());
         form.setPasswordConfirm(user.getPassword());
 
@@ -158,6 +172,7 @@ public class userController {
     }
 
     //Need to have a simple get for the page to load
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/user/search")
     public ModelAndView searchUser() throws Exception {
         ModelAndView response = new ModelAndView();

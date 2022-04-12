@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LoginController {
 
+    //This is a get, once security is done with POST than it grabs this and GETs the page
     @RequestMapping(value = "/login/login", method = RequestMethod.GET)
     public ModelAndView register() throws Exception {
         ModelAndView response = new ModelAndView();

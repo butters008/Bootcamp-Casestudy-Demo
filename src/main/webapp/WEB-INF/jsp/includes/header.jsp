@@ -1,3 +1,5 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,9 +21,15 @@
         <a class="navbar-brand" href="/index">Index</a> |
         <a class="navbar-brand" href="/ajax">Ajax</a> |
         <a class="navbar-brand" href="/user/register">Register</a> |
-        <a class="navbar-brand" href="/user/search">Search</a> |
-        <a class="navbar-brand" href="/login/login">login</a> |
-        <a class="navbar-brand" href="/login/logout">logout</a>
+        <sec:authorize access="hasAuthority('ADMIN')">
+            <a class="navbar-brand" href="/user/search">Search</a> |
+        </sec:authorize>
+        <sec:authorize access="!isAuthenticated()">
+            <a class="navbar-brand" href="/login/login">login</a> |
+        </sec:authorize>
+        <sec:authorize access="isAuthenticated()">
+            <a class="navbar-brand" href="/login/logout">logout</a>
+        </sec:authorize>
     </div>
 
 </nav>
