@@ -3,6 +3,7 @@
 <jsp:include page="includes/header.jsp"/>
 <div class="container">
     <h1>This is the index page</h1>
+    ${user}
 </div>
 
 <jsp:include page="includes/footer.jsp"/>

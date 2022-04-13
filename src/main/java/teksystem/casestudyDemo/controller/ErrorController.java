@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ErrorController {
 
+    //Going to add exceptions later - just tagging this.
     @ExceptionHandler(AccessDeniedException.class)
     @RequestMapping(value = "/error/404")
     public String error404(HttpServletRequest request) {

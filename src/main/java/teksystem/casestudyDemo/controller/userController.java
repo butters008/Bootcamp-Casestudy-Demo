@@ -11,6 +11,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import teksystem.casestudyDemo.database.DAO.UserDAO;
+import teksystem.casestudyDemo.database.DAO.UserRoleDAO;
 import teksystem.casestudyDemo.database.entity.User;
 import teksystem.casestudyDemo.database.entity.UserRole;
 import teksystem.casestudyDemo.formbean.RegisterFormBean;
@@ -26,6 +27,9 @@ public class userController {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private UserRoleDAO userRoleDAO;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -125,6 +129,7 @@ public class userController {
             user = new User();
         }
 
+        //Hashing to password
         user.setEmail(bean.getEmail());
         user.setFirstName(bean.getFirstName());
         user.setLastName(bean.getLastName());
@@ -136,6 +141,7 @@ public class userController {
         UserRole userRole = new UserRole();
         userRole.setUserId(user.getId());
         userRole.setUserRole("USER");
+        userRoleDAO.save(userRole);
         //manually do admin roles
 
         /*

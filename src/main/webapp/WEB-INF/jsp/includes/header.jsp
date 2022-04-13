@@ -23,12 +23,14 @@
         <a class="navbar-brand" href="/user/register">Register</a> |
         <sec:authorize access="hasAuthority('ADMIN')">
             <a class="navbar-brand" href="/user/search">Search</a> |
+            <a class="navbar-brand" href="/user/upload">File Upload</a> |
         </sec:authorize>
         <sec:authorize access="!isAuthenticated()">
             <a class="navbar-brand" href="/login/login">login</a> |
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
             <a class="navbar-brand" href="/login/logout">logout</a>
+            | <sec:authentication property="principal.username"/>
         </sec:authorize>
     </div>
 
